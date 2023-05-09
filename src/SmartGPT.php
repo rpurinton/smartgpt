@@ -52,7 +52,7 @@ class SmartGPT
 			echo ("\rGenerating Guides...($response_count/$response_total)...");
 		}
 		echo ("done.\n");
-		echo ("Generating Responses...(0/8)...");
+		echo ("Generating Initial Responses...(0/8)...");
 		$responses = $bunnyai->get($bunnyai->build_prompts($messagess));
 		$response_count = 0;
 		$response_total = count($responses);
@@ -77,7 +77,7 @@ class SmartGPT
 						$this->usage['totalTokens'] += $response['response']['usage']['totalTokens'];
 				}
 			}
-			echo ("\rGenerating Responses...($response_count/$response_total)...");
+			echo ("\rGenerating Initial Responses...($response_count/$response_total)...");
 		}
 		echo ("done.\n");
 		$base_messages = $messages;
@@ -118,7 +118,7 @@ class SmartGPT
 			"Give only your final response without any cognitive distortions."];
 		$messagess = [];
 		for ($i = 0; $i < 4; $i++) $messagess[] = $messages;
-		echo ("Resolving Response...(0/4)...");
+		echo ("Resolving Intermediate Responses (Round 1 of 2)...(0/4)...");
 		$responses = $bunnyai->get($bunnyai->build_prompts($messagess));
 		$response_count = 0;
 		$response_total = count($responses);
@@ -142,7 +142,7 @@ class SmartGPT
 						$this->usage['totalTokens'] += $response['response']['usage']['totalTokens'];
 				}
 			}
-			echo ("\rResolving Responses...($response_count/$response_total)...");
+			echo ("\rResolving Intermediate Responses (Round 1 of 2)...($response_count/$response_total)...");
 		}
 		echo ("done.\n");
 		print_r($responses);
