@@ -44,20 +44,33 @@ class BunnyAI extends ConfigLoader
 		return 'openai_' . bin2hex(random_bytes(16));
 	}
 
-	public function build_prompts(array $messages, float $temperature = 0.9, int $max_tokens = 64, int $top_p = 1, int $n = 1, int $frequency_penalty = 0, int $presence_penalty = 0): array
+	public function build_prompts(array $messages, float $temperature = 0.9, int $max_tokens = 4096, int $top_p = 1, int $n = 1, int $frequency_penalty = 0, int $presence_penalty = 0): array
 	{
 		$prompts = array();
-		foreach ($messages as $key => $message) $prompts[$key] = [
-			'model' => 'gpt-3.5-turbo',
-			'messages' => $message,
-			'temperature' => $temperature,
-			'max_tokens' => $max_tokens,
-			'top_p' => $top_p,
-			'n' => $n,
-			'stream' => false,
-			'frequency_penalty' => $frequency_penalty,
-			'presence_penalty' => $presence_penalty,
-		];
+		$number = 0;
+		$total = sizeof($messages);
+		foreach ($messages as $key => $message) {
+			$number++;
+			$prompts[$key] = [
+				'model' => 'gpt-3.5-turbo',
+				'messages' => $message,
+				'temperature' => $this->get_tempreture($number, $total),
+				'max_tokens' => $max_tokens,
+				'top_p' => $top_p,
+				'n' => $n,
+				'stream' => false,
+				'frequency_penalty' => $frequency_penalty,
+				'presence_penalty' => $presence_penalty,
+			];
+		}
 		return $prompts;
+	}
+
+	private function get_tempreture(int $number, int $total): float
+	{
+		if ($number === 1 && $total === 1) return 0.5;
+		if ($number === 1 && $total === 2) return 0;
+		if ($number === 2 && $total === 2) return 1;
+		return (1 / ($total - 1)) * ($number - 1);
 	}
 }
