@@ -10,11 +10,11 @@ class SmartGPT
 		require_once(__DIR__ . "/BunnyAI.php");
 		$bunnyai = new BunnyAI;
 		$messages[] = ["role" => "user", "content" => $prompt];
-		$messagess[] = $messages;
-		$messagess[] = $messages;
-		$messagess[] = $messages;
-		$prompts = $bunnyai->build_prompts($messagess);
-		$responses = $bunnyai->get($prompts);
+		$messages[] = ["role" => "user", "content" => "Generate a step-by-step guide to address the user input based on the information provided."];
+		for ($i = 0; $i < 16; $i++) {
+			$messagess[] = $messages;
+		}
+		$responses = $bunnyai->get($bunnyai->build_prompts($messagess));
 		foreach ($responses as $response) {
 			$this->usage['promptTokens'] += $response['response']['usage']['promptTokens'];
 			$this->usage['completionTokens'] += $response['response']['usage']['completionTokens'];
