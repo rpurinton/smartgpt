@@ -146,8 +146,6 @@ class SmartGPT
 			echo ("\rResolving Intermediate Responses (Round 1 of 2)...($response_count/$response_total)...");
 		}
 		echo ("done.\n");
-		print_r($messages);
-		die();
 		$base_messages = $messages;
 		$messages[] = ["role" => "user", "content" => "Imagine you are a devil's advocate who is tasked with critisizing these Possible Responses,\n" .
 			"Identify any errors, inconsistencies, nuances, caveats, edge cases not included, and/or cognitive distortions.\n" .
@@ -190,7 +188,8 @@ class SmartGPT
 		$responses = $bunnyai->get($bunnyai->build_prompts($messagess));
 		$response_count = 0;
 		$response_total = count($responses);
-		$messages = $base_input;
+		$messages = [];
+		$messages[] = $base_input;
 		foreach ($responses as $response) {
 			$response_count++;
 			if (isset($response['response'])) {
@@ -219,7 +218,7 @@ class SmartGPT
 			"Use your outside-the-box Critical Thinking skills.  Keep your response as short and concise as possible while still hitting all the important details."];
 		$messagess = [];
 		for ($i = 0; $i < 4; $i++) $messagess[] = $messages;
-		echo ("Playing Devil's Advocate...(0/4)...");
+		echo ("Playing Devil's Advocate (Round 3 of 3)...(0/4)...");
 		$responses = $bunnyai->get($bunnyai->build_prompts($messagess));
 		$response_count = 0;
 		$response_total = count($responses);
@@ -243,7 +242,7 @@ class SmartGPT
 						$this->usage['totalTokens'] += $response['response']['usage']['totalTokens'];
 				}
 			}
-			echo ("\rPlaying Devil's Advocate...($response_count/$response_total)...");
+			echo ("\rPlaying Devil's Advocate (Round 3 of 3)...($response_count/$response_total)...");
 		}
 		echo ("done.\n");
 		$messages[] = ["role" => "user", "content" => "Based on the User Input and Possible Responses, and while mitigating the issues identified by the Devil's Advocates,\n" .
@@ -255,7 +254,6 @@ class SmartGPT
 		$responses = $bunnyai->get($bunnyai->build_prompts($messagess));
 		$response_count = 0;
 		$response_total = count($responses);
-		$messages = $base_input;
 		foreach ($responses as $response) {
 			$response_count++;
 			if (isset($response['response'])) {
