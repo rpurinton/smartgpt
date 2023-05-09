@@ -24,20 +24,33 @@ class SmartGPT
 		$responses = $bunnyai->get($bunnyai->build_prompts($messagess));
 		$response_count = 0;
 		$response_total = count($responses);
+		$messagess = [];
 		foreach ($responses as $response) {
 			$response_count++;
-			if (isset($response['response']) && isset($response['response']['usage'])) {
-				if (isset($response['response']['usage']['promptTokens']))
-					$this->usage['promptTokens'] += $response['response']['usage']['promptTokens'];
-				if (isset($response['response']['usage']['completionTokens']))
-					$this->usage['completionTokens'] += $response['response']['usage']['completionTokens'];
-				if (isset($response['response']['usage']['totalTokens']))
-					$this->usage['totalTokens'] += $response['response']['usage']['totalTokens'];
+			if (isset($response['response'])) {
+				if (isset($response['response']['choices'])) {
+					foreach ($response['response']['choices'] as $choice) {
+						if (isset($choice['message']) && isset($choice['message']['content'])) {
+							$messages = [];
+							$messages[] = $base_input;
+							$messages[] = ["role" => "user", "content" => $choice['message']['content']];
+							$messagess[] = $messages;
+						}
+					}
+				}
+				if (isset($response['response']['usage'])) {
+					if (isset($response['response']['usage']['promptTokens']))
+						$this->usage['promptTokens'] += $response['response']['usage']['promptTokens'];
+					if (isset($response['response']['usage']['completionTokens']))
+						$this->usage['completionTokens'] += $response['response']['usage']['completionTokens'];
+					if (isset($response['response']['usage']['totalTokens']))
+						$this->usage['totalTokens'] += $response['response']['usage']['totalTokens'];
+				}
 			}
 			echo ("\rGenerating Guides...($response_count/$response_total)...");
 		}
 		echo ("done.\n");
-		print_r($responses);
+		print_r($messagess);
 		print_r($this->usage);
 	}
 }
