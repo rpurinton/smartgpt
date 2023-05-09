@@ -9,8 +9,8 @@ class SmartGPT
 		echo ("Prompt: $prompt\n");
 		require_once(__DIR__ . "/BunnyAI.php");
 		$bunnyai = new BunnyAI;
-		$messages[] = ["role" => "user", "content" => $prompt];
-		$messages[] = ["role" => "user", "content" => "Generate a step-by-step guide to address the user input based on the information provided."];
+		$messages[] = ["role" => "user", "content" => "User Input: \"$prompt\""];
+		$messages[] = ["role" => "user", "content" => "Generate a step-by-step guide to formulating a response to User input. Give just the steps, no examples or explanations."];
 		for ($i = 0; $i < 16; $i++) {
 			$messagess[] = $messages;
 		}
