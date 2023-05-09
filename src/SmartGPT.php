@@ -56,7 +56,6 @@ class SmartGPT
 		$responses = $bunnyai->get($bunnyai->build_prompts($messagess));
 		$response_count = 0;
 		$response_total = count($responses);
-		$messagess = [];
 		$messages = [];
 		$messages[] = $base_input;
 		foreach ($responses as $response) {
@@ -79,6 +78,38 @@ class SmartGPT
 				}
 			}
 			echo ("\rGenerating Responses...($response_count/$response_total)...");
+		}
+		echo ("done.\n");
+		$messages[] = ["role" => "user", "content" => "Imagine you are a resolver who is tasked with reconciling the differences between each Possible Response,\n" .
+			"and merging them into a single final best response. Give just the final response without any cognitive distortions."];
+		$messagess = [];
+		for ($i = 0; $i < 8; $i++) $messagess[] = $messages;
+		echo ("Generating Resolutions...(0/8)...");
+		$responses = $bunnyai->get($bunnyai->build_prompts($messagess));
+		$response_count = 0;
+		$response_total = count($responses);
+		$messages = [];
+		$messages[] = $base_input;
+		foreach ($responses as $response) {
+			$response_count++;
+			if (isset($response['response'])) {
+				if (isset($response['response']['choices'])) {
+					foreach ($response['response']['choices'] as $choice) {
+						if (isset($choice['message']) && isset($choice['message']['content'])) {
+							$messages[] = ["role" => "user", "content" => "Possible Response $response_count of $response_total: " . $choice['message']['content']];
+						}
+					}
+				}
+				if (isset($response['response']['usage'])) {
+					if (isset($response['response']['usage']['promptTokens']))
+						$this->usage['promptTokens'] += $response['response']['usage']['promptTokens'];
+					if (isset($response['response']['usage']['completionTokens']))
+						$this->usage['completionTokens'] += $response['response']['usage']['completionTokens'];
+					if (isset($response['response']['usage']['totalTokens']))
+						$this->usage['totalTokens'] += $response['response']['usage']['totalTokens'];
+				}
+			}
+			echo ("\rGenerating Resolutions...($response_count/$response_total)...");
 		}
 		echo ("done.\n");
 		print_r($responses);
