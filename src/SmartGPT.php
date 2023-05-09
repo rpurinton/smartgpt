@@ -32,7 +32,7 @@ class SmartGPT
 						if (isset($choice['message']) && isset($choice['message']['content'])) {
 							$messages = [];
 							$messages[] = $base_input;
-							$messages[] = ["role" => "user", "content" => $choice['message']['content']];
+							$messages[] = ["role" => "user", "content" => "To the best of your abilities I would like you to: " . $choice['message']['content'] . "\nProvide just the response without any cognitive distortions"];
 							$messagess[] = $messages;
 						}
 					}
