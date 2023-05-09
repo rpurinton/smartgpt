@@ -6,7 +6,6 @@ class SmartGPT
 
 	function __construct(string $prompt)
 	{
-		echo ("Prompt: $prompt\n");
 		require_once(__DIR__ . "/BunnyAI.php");
 		$bunnyai = new BunnyAI;
 		$base_input = ["role" => "user", "content" => "User Input: \"$prompt\""];
@@ -50,7 +49,37 @@ class SmartGPT
 			echo ("\rGenerating Guides...($response_count/$response_total)...");
 		}
 		echo ("done.\n");
-		print_r($messagess);
+		echo ("Generating Responses...(0/16)...");
+		$responses = $bunnyai->get($bunnyai->build_prompts($messagess));
+		$response_count = 0;
+		$response_total = count($responses);
+		$messagess = [];
+		$messages = [];
+		$messages[] = $base_input;
+		foreach ($responses as $response) {
+			$response_count++;
+			if (isset($response['response'])) {
+				if (isset($response['response']['choices'])) {
+					foreach ($response['response']['choices'] as $choice) {
+						if (isset($choice['message']) && isset($choice['message']['content'])) {
+							$messages[] = ["role" => "user", "content" => "Possible Response $response_count of $response_total: " . $choice['message']['content']];
+						}
+					}
+				}
+				if (isset($response['response']['usage'])) {
+					if (isset($response['response']['usage']['promptTokens']))
+						$this->usage['promptTokens'] += $response['response']['usage']['promptTokens'];
+					if (isset($response['response']['usage']['completionTokens']))
+						$this->usage['completionTokens'] += $response['response']['usage']['completionTokens'];
+					if (isset($response['response']['usage']['totalTokens']))
+						$this->usage['totalTokens'] += $response['response']['usage']['totalTokens'];
+				}
+			}
+			echo ("\rGenerating Responses...($response_count/$response_total)...");
+		}
+		echo ("done.\n");
+		print_r($responses);
+		print_r($messages);
 		print_r($this->usage);
 	}
 }
