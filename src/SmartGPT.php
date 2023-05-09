@@ -81,8 +81,8 @@ class SmartGPT
 		}
 		echo ("done.\n");
 		$messages[] = ["role" => "user", "content" => "Imagine you are a devil's advocate who is tasked with critisizing these Possible Responses,\n" .
-			"checking for any errors or inconsistencies, consider any nuances, caveats, edge cases, and cognitive distortions.\n" .
-			"Let's work this out in a step-by-step manner to make sure we have identified all the issues."];
+			"checking for any errors or inconsistencies, consider any nuances, caveats, edge cases not covered, cognitive distortions.\n" .
+			"Use your outside-the-box Critical Thinking skills."];
 		$messagess = [];
 		for ($i = 0; $i < 8; $i++) $messagess[] = $messages;
 		echo ("Playing Devil's Advocate...(0/8)...");
