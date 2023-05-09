@@ -145,7 +145,7 @@ class SmartGPT
 			echo ("\rResolving Intermediate Responses (Round 1 of 2)...($response_count/$response_total)...");
 		}
 		echo ("done.\n");
-		print_r($responses);
+		print_r($messages);
 		die();
 		$base_messages = $messages;
 		$messages[] = ["role" => "user", "content" => "Imagine you are a devil's advocate who is tasked with critisizing these Possible Responses,\n" .
