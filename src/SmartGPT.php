@@ -80,11 +80,12 @@ class SmartGPT
 			echo ("\rGenerating Responses...($response_count/$response_total)...");
 		}
 		echo ("done.\n");
-		$messages[] = ["role" => "user", "content" => "Imagine you are a resolver who is tasked with reconciling the differences between each Possible Response,\n" .
-			"and merging them into a single final best response. Give just the final response without any cognitive distortions."];
+		$messages[] = ["role" => "user", "content" => "Imagine you are a devil's advocate who is tasked with critisizing these Possible Responses,\n" .
+			"checking for any errors or inconsistencies, consider any nuances, caveats, edge cases, and cognitive distortions.\n" .
+			"Let's work this out in a step-by-step manner to make sure we have identified all the issues."];
 		$messagess = [];
 		for ($i = 0; $i < 8; $i++) $messagess[] = $messages;
-		echo ("Generating Resolutions...(0/8)...");
+		echo ("Playing Devil's Advocate...(0/8)...");
 		$responses = $bunnyai->get($bunnyai->build_prompts($messagess));
 		$response_count = 0;
 		$response_total = count($responses);
@@ -109,7 +110,7 @@ class SmartGPT
 						$this->usage['totalTokens'] += $response['response']['usage']['totalTokens'];
 				}
 			}
-			echo ("\rGenerating Resolutions...($response_count/$response_total)...");
+			echo ("\rPlaying Devil's Advocate...($response_count/$response_total)...");
 		}
 		echo ("done.\n");
 		print_r($responses);
