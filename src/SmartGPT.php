@@ -80,8 +80,9 @@ class SmartGPT
 			echo ("\rGenerating Responses...($response_count/$response_total)...");
 		}
 		echo ("done.\n");
+		$base_messages = $messages;
 		$messages[] = ["role" => "user", "content" => "Imagine you are a devil's advocate who is tasked with critisizing these Possible Responses,\n" .
-			"checking for any errors or inconsistencies, consider any nuances, caveats, edge cases not covered, cognitive distortions.\n" .
+			"Identify any errors, inconsistencies, nuances, caveats, edge cases not included, and/or cognitive distortions.\n" .
 			"Use your outside-the-box Critical Thinking skills."];
 		$messagess = [];
 		for ($i = 0; $i < 4; $i++) $messagess[] = $messages;
@@ -89,15 +90,14 @@ class SmartGPT
 		$responses = $bunnyai->get($bunnyai->build_prompts($messagess));
 		$response_count = 0;
 		$response_total = count($responses);
-		$messages = [];
-		$messages[] = $base_input;
+		$messages = $base_messages;
 		foreach ($responses as $response) {
 			$response_count++;
 			if (isset($response['response'])) {
 				if (isset($response['response']['choices'])) {
 					foreach ($response['response']['choices'] as $choice) {
 						if (isset($choice['message']) && isset($choice['message']['content'])) {
-							$messages[] = ["role" => "user", "content" => "Possible Response $response_count of $response_total: " . $choice['message']['content']];
+							$messages[] = ["role" => "user", "content" => "Devil's Advocate $response_count of $response_total: " . $choice['message']['content']];
 						}
 					}
 				}
