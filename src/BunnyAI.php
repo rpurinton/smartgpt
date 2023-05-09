@@ -44,7 +44,7 @@ class BunnyAI extends ConfigLoader
 		return 'openai_' . bin2hex(random_bytes(16));
 	}
 
-	public function build_prompts(array $messages, float $temperature = 0.9, int $max_tokens = 4096, int $top_p = 1, int $n = 1, int $frequency_penalty = 0, int $presence_penalty = 0): array
+	public function build_prompts(array $messages, float $temperature = 0.9, int $max_tokens = 2048, int $top_p = 1, int $n = 1, int $frequency_penalty = 0, int $presence_penalty = 0): array
 	{
 		$prompts = array();
 		$number = 0;
