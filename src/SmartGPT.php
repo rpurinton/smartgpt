@@ -12,6 +12,7 @@ class SmartGPT
 		$messages[] = ["role" => "user", "content" => $prompt];
 		$messagess[] = $messages;
 		$messagess[] = $messages;
+		$messagess[] = $messages;
 		$prompts = $bunnyai->build_prompts($messagess);
 		$responses = $bunnyai->get($prompts);
 		foreach ($responses as $response) {
