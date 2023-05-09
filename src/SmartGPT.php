@@ -122,7 +122,8 @@ class SmartGPT
 		$responses = $bunnyai->get($bunnyai->build_prompts($messagess));
 		$response_count = 0;
 		$response_total = count($responses);
-		$messages = $base_input;
+		$messages = [];
+		$messages[] = $base_input;
 		foreach ($responses as $response) {
 			$response_count++;
 			if (isset($response['response'])) {
