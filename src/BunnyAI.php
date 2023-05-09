@@ -71,6 +71,6 @@ class BunnyAI extends ConfigLoader
 		if ($number === 1 && $total === 1) return 0.5;
 		if ($number === 1 && $total === 2) return 0;
 		if ($number === 2 && $total === 2) return 1;
-		return (1 / ($total - 1)) * ($number - 1);
+		return round((1 / ($total - 1)) * ($number - 1), 3);
 	}
 }
