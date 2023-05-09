@@ -55,7 +55,6 @@ class BunnyAI extends ConfigLoader
 				'model' => 'gpt-3.5-turbo',
 				'messages' => $message,
 				'temperature' => $this->get_tempreture($number, $total),
-				'max_tokens' => $max_tokens,
 				'top_p' => $top_p,
 				'n' => $n,
 				'stream' => false,
