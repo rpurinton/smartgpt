@@ -18,8 +18,8 @@ class SmartGPT
 		$messages = [];
 		$messages[] = $base_input;
 		$messages[] = $generate_guides;
-		for ($i = 0; $i < 16; $i++) $messagess[] = $messages;
-		echo ("Generating Guides...(0/16)...");
+		for ($i = 0; $i < 8; $i++) $messagess[] = $messages;
+		echo ("Generating Guides...(0/8)...");
 		$responses = $bunnyai->get($bunnyai->build_prompts($messagess));
 		$response_count = 0;
 		$response_total = count($responses);
@@ -52,7 +52,7 @@ class SmartGPT
 			echo ("\rGenerating Guides...($response_count/$response_total)...");
 		}
 		echo ("done.\n");
-		echo ("Generating Responses...(0/16)...");
+		echo ("Generating Responses...(0/8)...");
 		$responses = $bunnyai->get($bunnyai->build_prompts($messagess));
 		$response_count = 0;
 		$response_total = count($responses);
@@ -84,8 +84,8 @@ class SmartGPT
 			"checking for any errors or inconsistencies, consider any nuances, caveats, edge cases not covered, cognitive distortions.\n" .
 			"Use your outside-the-box Critical Thinking skills."];
 		$messagess = [];
-		for ($i = 0; $i < 8; $i++) $messagess[] = $messages;
-		echo ("Playing Devil's Advocate...(0/8)...");
+		for ($i = 0; $i < 4; $i++) $messagess[] = $messages;
+		echo ("Playing Devil's Advocate...(0/4)...");
 		$responses = $bunnyai->get($bunnyai->build_prompts($messagess));
 		$response_count = 0;
 		$response_total = count($responses);
